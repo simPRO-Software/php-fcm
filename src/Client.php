@@ -56,13 +56,16 @@ class Client implements ClientInterface
      * containing their answer.
      *
      * @param Message $message
+     * @param bool $async
      *
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\RequestException
      */
-    public function send(Message $message)
+    public function send(Message $message, $async = false)
     {
-        return $this->guzzleClient->post(
+        $method = $async ? 'postAsync' : 'post';
+
+        return $this->guzzleClient->{$method}(
             $this->getApiUrl(),
             [
                 'headers' => [
